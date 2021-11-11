@@ -7,6 +7,8 @@ import androidx.core.app.ActivityCompat;
 //import android.view.View;
 //import android.widget.Button;
 import android.Manifest;
+import android.app.ActivityManager;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.hardware.*;
 import android.location.Location;
@@ -27,5 +29,20 @@ public class MainActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_main);
 
+        if (!isMyServiceRunning(SatelliteMain.class)){
+            this.startService(new Intent(this, SatelliteMain.class));
+        }
+
+
+    }
+
+    private boolean isMyServiceRunning(Class<?> serviceClass) {
+        ActivityManager manager = (ActivityManager) getSystemService(this.ACTIVITY_SERVICE);
+        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
+            if (serviceClass.getName().equals(service.service.getClassName())) {
+                return true;
+            }
+        }
+        return false;
     }
 }

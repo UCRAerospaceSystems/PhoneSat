@@ -13,7 +13,7 @@ public class AutoBoot extends BroadcastReceiver {
         PowerManager powerManager = (PowerManager) aContext.getSystemService(aContext.POWER_SERVICE);
         PowerManager.WakeLock wakeLock = powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "Satellite::StayOn");
 
-        //Now, in a normal program we would make sure to release this wake lock but we never want to let the phone sleep
+        //Now, in a normal program we would make sure to release this wake lock but we never want to let the phone sleep since satellite
         wakeLock.acquire();
 
         //Start our main service up
