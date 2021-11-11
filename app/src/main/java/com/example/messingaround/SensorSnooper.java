@@ -10,6 +10,7 @@ import java.util.Vector;
 public class SensorSnooper implements SensorEventListener {
     //Sensor Manager
     SensorManager sensorManager;
+    private boolean running;
 
     //Motion Section
     private Sensor accelerometer;
@@ -79,13 +80,28 @@ public class SensorSnooper implements SensorEventListener {
         return pressure_Average;
     }
 
+    public void resume(){
+        if (!running) {
+            sensorManager.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_NORMAL);
+            sensorManager.registerListener(this, gyroscope, SensorManager.SENSOR_DELAY_NORMAL);
+            sensorManager.registerListener(this, magnetometer, SensorManager.SENSOR_DELAY_NORMAL);
+            sensorManager.registerListener(this, barometer, SensorManager.SENSOR_DELAY_NORMAL);
+            running = true;
+        }
+    }
+
+    public void pause(){
+        sensorManager.unregisterListener(this);
+        running = false;
+    }
+
     @Override
     public void onSensorChanged(SensorEvent event) {
         String sensorType = event.sensor.getStringType();
         if (sensorType == accelerometer.getStringType()){
             linearAccelerationInstant.set(event.values);
 
-            /*if (linearAccelerationSumCount > 10){
+            if (linearAccelerationSumCount > 10){
                 linearAccelerationAverage = linearAccelerationSum.divideUnchanged(linearAccelerationSumCount);
 
                 linearAccelerationSum.set(0, 0, 0);
@@ -93,7 +109,7 @@ public class SensorSnooper implements SensorEventListener {
             }
 
             linearAccelerationSum.add(event.values);
-            linearAccelerationSumCount += 1; */
+            linearAccelerationSumCount += 1;
         }else if (sensorType == gyroscope.getStringType()){
             rotationalAccelerationInstant.set(event.values);
         }else if (sensorType == magnetometer.getStringType()){
