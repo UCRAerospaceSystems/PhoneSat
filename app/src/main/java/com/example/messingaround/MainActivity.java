@@ -29,11 +29,13 @@ public class MainActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_main);
 
+        TextView status = (TextView) findViewById(R.id.textView3);
+
         if (!isMyServiceRunning(SatelliteMain.class)){
-            this.startService(new Intent(this, SatelliteMain.class));
+            status.setText("Was not started!");
+            //this.startService(new Intent(this, SatelliteMain.class));
         }
-
-
+        status.setText("Running!");
     }
 
     private boolean isMyServiceRunning(Class<?> serviceClass) {
