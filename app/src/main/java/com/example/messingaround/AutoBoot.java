@@ -18,5 +18,8 @@ public class AutoBoot extends BroadcastReceiver {
 
         //Start our main service up
         aContext.startService(new Intent(aContext, SatelliteMain.class));
+
+        //Start the activity/app
+        aContext.startActivity(new Intent(aContext, MainActivity.class));
     }
 }
