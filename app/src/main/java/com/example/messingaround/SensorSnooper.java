@@ -10,7 +10,7 @@ import java.util.Vector;
 public class SensorSnooper implements SensorEventListener {
     //Sensor Manager
     SensorManager sensorManager;
-    private boolean running;
+    private final int averageCount = 10;
 
     //Motion Section
     private Sensor accelerometer;
@@ -81,18 +81,16 @@ public class SensorSnooper implements SensorEventListener {
     }
 
     public void resume(){
-        if (!running) {
-            sensorManager.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_NORMAL);
-            sensorManager.registerListener(this, gyroscope, SensorManager.SENSOR_DELAY_NORMAL);
-            sensorManager.registerListener(this, magnetometer, SensorManager.SENSOR_DELAY_NORMAL);
-            sensorManager.registerListener(this, barometer, SensorManager.SENSOR_DELAY_NORMAL);
-            running = true;
-        }
+        this.pause();
+
+        sensorManager.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_NORMAL);
+        sensorManager.registerListener(this, gyroscope, SensorManager.SENSOR_DELAY_NORMAL);
+        sensorManager.registerListener(this, magnetometer, SensorManager.SENSOR_DELAY_NORMAL);
+        sensorManager.registerListener(this, barometer, SensorManager.SENSOR_DELAY_NORMAL);
     }
 
     public void pause(){
         sensorManager.unregisterListener(this);
-        running = false;
     }
 
     @Override
@@ -101,7 +99,7 @@ public class SensorSnooper implements SensorEventListener {
         if (sensorType == accelerometer.getStringType()){
             linearAccelerationInstant.set(event.values);
 
-            if (linearAccelerationSumCount > 10){
+            if (linearAccelerationSumCount > averageCount){
                 linearAccelerationAverage = linearAccelerationSum.divideUnchanged(linearAccelerationSumCount);
 
                 linearAccelerationSum.set(0, 0, 0);
@@ -112,10 +110,40 @@ public class SensorSnooper implements SensorEventListener {
             linearAccelerationSumCount += 1;
         }else if (sensorType == gyroscope.getStringType()){
             rotationalAccelerationInstant.set(event.values);
+
+            if (rotationalAccelerationSumCount > averageCount){
+                rotationalAccelerationAverage = rotationalAccelerationSum.divideUnchanged(rotationalAccelerationSumCount);
+
+                rotationalAccelerationSum.set(0, 0, 0);
+                rotationalAccelerationSumCount = 0;
+            }
+
+            linearAccelerationSum.add(event.values);
+            linearAccelerationSumCount += 1;
         }else if (sensorType == magnetometer.getStringType()){
             magneticFieldInstant.set(event.values);
+
+            if (magneticFieldSumCount > averageCount){
+                magneticFieldAverage = magneticFieldSum.divideUnchanged(magneticFieldSumCount);
+
+                magneticFieldSum.set(0, 0, 0);
+                magneticFieldSumCount = 0;
+            }
+
+            magneticFieldSum.add(event.values);
+            magneticFieldSumCount += 1;
         }else if (sensorType == barometer.getStringType()){
             pressure_Instant = event.values[0];
+
+            if (magneticFieldSumCount > averageCount){
+                pressure_Average = pressure_Sum / pressure_SumCount;
+
+                pressure_Sum = 0;
+                pressure_SumCount = 0;
+            }
+
+            pressure_Sum += event.values[0];
+            pressure_SumCount += 1;
         }
     }
 
