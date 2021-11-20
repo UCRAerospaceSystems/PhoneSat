@@ -9,6 +9,7 @@ public class SatelliteMain extends Service {
     public SensorManager sensorManager;
     public SensorSnooper sensorHub;
     public GPSManager gpsManager;
+    public USBCommunication usbSnooper;
 
     @Override
     public void onCreate(){
@@ -16,6 +17,7 @@ public class SatelliteMain extends Service {
 
         sensorHub = new SensorSnooper(sensorManager);
         gpsManager = new GPSManager(this);
+        usbSnooper = new USBCommunication(this);
     }
 
     @Override
@@ -26,9 +28,10 @@ public class SatelliteMain extends Service {
     @Override
     public int onStartCommand(Intent aIntent, int flags, int startId){
         gpsManager.updateToLastPosition(this);
+
         sensorHub.resume();
 
-        //TODO: Listen to USB/Serial Port for events
+        usbSnooper.beginHeartbeat();
 
         return START_STICKY;
     }
