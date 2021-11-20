@@ -66,7 +66,7 @@ public class USBCommunication {
         addFloatToByteArr(data, vectorInfo.get("Magnetic").getZ());
 
         addFloatToByteArr(data, pressure);
-        //TODO: Add position into this.... somehow
+        //TODO: Add position into this... somehow
 
         communicationLine.bulkTransfer(endpointOUT, data, data.length, 1000);
     }
