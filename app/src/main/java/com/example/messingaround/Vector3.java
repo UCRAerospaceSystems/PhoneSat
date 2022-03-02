@@ -2,15 +2,11 @@ package com.example.messingaround;
 
 public class Vector3 {
 
-    private float x;
-    private float y;
-    private float z;
+    private float x = 0;
+    private float y = 0;
+    private float z = 0;
 
-    Vector3(){
-        x = 0;
-        y = 0;
-        z = 0;
-    }
+    Vector3(){}
 
     Vector3(float x, float y, float z){
         this.x = x;
