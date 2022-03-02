@@ -11,7 +11,7 @@ The OBC will handle the processing of radio signals to and from the home base as
 The OBC consists of:
 1. USB Connection to the Phone
 2. Radio Signal Module
-   a. Packetizer
+4. Packetizer
 3. Heartbeat functionality
 
 The USB Connection will allow the OBC to interface with the Android Phone, getting important IMU data to maneuver the satellite and any images the phone takes.
@@ -29,15 +29,15 @@ The Android Phone will serve as the IMU of the entire Satellite and the only met
 
 The Android Phone Application will consist of:
 1. Sensor Module
-   a. Vector class
-2. Camera Module
-   a. Image Processor
-   i. Image Cropping
-   ii. Color Formatting
-   b. Image Analyzer
-   i. Image Compression
-3. USB Connection to the OBC
-4. Auto-start/Auto-reboot function
+2. Vector class
+3. Camera Module
+4. Image Processor
+5. Image Cropping
+6. Color Formatting
+7. Image Analyzer
+8. Image Compression
+9. USB Connection to the OBC
+10. Auto-start/Auto-reboot function
 
 The Sensor Module is the section of the Application which will snoop through all the sensors of the Phone and return Linear/Rotational Velocity, Magnetometer data, and GPS information.
 The Sensor Module must, of course, include a Vector class to manage the information measured by the sensors on the phone.
